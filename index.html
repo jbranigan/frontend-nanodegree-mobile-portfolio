@@ -11,8 +11,9 @@
     <!-- removed the 700 weight font, as it wasn't being used and can be synthesized by using a bold weight
           <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
     -->
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet">
-
+    <!-- then added google webFontLoader to try it asynchronously (at the bottom of the page)
+          <link href="//fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet">
+    -->
     <!-- Inlining these styles 
       <link href="css/style.css" rel="stylesheet"> -->
     <style>
@@ -66,13 +67,13 @@
           header p { padding-left: 4.5em;}
         }
     </style>
-    <link href="css/print.css" rel="stylesheet" media="print" max-age=600>
+    <link href="css/print.css" rel="stylesheet" media="print">
 
   </head>
 
   <body>
     <header>
-      <a href="/"><img src="img/profilepic.jpg" max-age=600></a>
+      <a href="/"><img src="img/profilepic.jpg"></a>
       <p>Cameron Pittman<br><span>Course Developer</span></p>
     </header>
 
@@ -102,7 +103,7 @@
           </li>
 
           <li>
-            <img style="width: 100px;" src="views/images/pizzeria.jpg" max-age=600>
+            <img style="width: 100px;" src="views/images/pizzeria.jpg">
             <a href="views/pizza.html">Cam's Pizzeria</a>
             <p>Who wants a performant pizza?</p>
           </li>
@@ -121,7 +122,15 @@
       ga('create', 'UA-XXXX-Y');
       ga('send', 'pageview');
     </script>
-    <script async src="http://www.google-analytics.com/analytics.js" max-age=7200></script>
-    <script async src="js/perfmatters.js" max-age=600></script>
+    <script async src="http://www.google-analytics.com/analytics.js"></script>
+    <script async src="js/perfmatters.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>
+      WebFont.load({
+        google: {
+          families: ['Open Sans']
+        }
+      });
+    </script>
   </body>
 </html>
