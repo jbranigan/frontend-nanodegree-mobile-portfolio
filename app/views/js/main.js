@@ -502,9 +502,15 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   var items = document.querySelectorAll('.mover');
+  // Important to calculate scrollTop outside of the loop
+  // Though this is still causing a reflow on the initial draw
+  var scrollSpot = document.body.scrollTop;
+  
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    // And use that variable in here
+    var phase = Math.sin((scrollSpot / 1250) + (i % 5));
+    var bLeft = items[i].basicLeft;
+    items[i].style.left = bLeft + 100 * phase + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
