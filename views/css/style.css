@@ -42,6 +42,18 @@ form {
   display: flex;
 }
 
+.pizza-small {
+  width: 25%;
+}
+
+.pizza-medium {
+  width: 33%;
+}
+
+.pizza-large {
+  width: 50%;
+}
+
 .randomPizzaContainer:after {
   content: "";
   display: table;
