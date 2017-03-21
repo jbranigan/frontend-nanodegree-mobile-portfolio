@@ -424,41 +424,25 @@ var resizePizzas = function(size) {
 
   // Remove unnecessary determineDx function
 
-  // Changes the slider value to a percent width
-  function sizeSwitcher (size) {
-    switch(size) {
-      case "1":
-        return 'pizza-small'; // 25%
-      case "2":
-        return 'pizza-medium'; // 33%
-      case "3":
-        return 'pizza-large'; // 50%
-      default:
-        console.log("bug in sizeSwitcher");
-    }
-  }
-
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
     var containers = document.getElementsByClassName('randomPizzaContainer');
-    for (var i = 0; i < containers.length; i++) {
-      //containers[i].style.width = sizeSwitcher(size);
+    var i, cLen = containers.length;
+    for (i = 0; i < cLen; i++) {
+      var container = containers[i];
       
       switch(size) {
         case "1":
-          containers[i].classList.remove('pizza-medium');
-          containers[i].classList.remove('pizza-large');
-          containers[i].classList.add('pizza-small');
+          container.classList.remove('pizza-medium', 'pizza-large');
+          container.classList.add('pizza-small');
           break;
         case "2":
-          containers[i].classList.remove('pizza-small');
-          containers[i].classList.remove('pizza-large');
-          containers[i].classList.add('pizza-medium');
+          container.classList.remove('pizza-small', 'pizza-large');
+          container.classList.add('pizza-medium');
           break;
         case "3":
-          containers[i].classList.remove('pizza-medium');
-          containers[i].classList.remove('pizza-small');
-          containers[i].classList.add('pizza-large');
+          container.classList.remove('pizza-medium', 'pizza-small');
+          container.classList.add('pizza-large');
           break;
         default:
           console.log("bug in sizeSwitcher");
