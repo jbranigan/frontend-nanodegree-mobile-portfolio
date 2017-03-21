@@ -496,21 +496,29 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
+// Separate the scroll calculation
+// Approach adapted from https://www.html5rocks.com/en/tutorials/speed/animations
+var lastScrollY = 0,
+    ticking = false;
+
+function requestTick() {
+    if (!ticking) {
+        requestAnimationFrame(updatePositions);
+    }
+    ticking = true;
+}
+
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
-  // Important to calculate scrollTop outside of the loop
-  // Though this is still causing a reflow on the initial draw
-  var scrollSpot = document.body.scrollTop;
-  
+  var items = document.getElementsByClassName('mover');
+
   for (var i = 0; i < items.length; i++) {
     // And use that variable in here
-    var phase = Math.sin((scrollSpot / 1250) + (i % 5));
-    var bLeft = items[i].basicLeft;
-    items[i].style.left = bLeft + 100 * phase + 'px';
+    var phase = Math.sin((lastScrollY / 1250) + (i % 5));
+    items[i].style.transform = 'translateX(' + 100 * phase + 'px)';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -521,24 +529,30 @@ function updatePositions() {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
     logAverageFrame(timesToUpdatePosition);
   }
+
+  // Reset ticking
+  ticking = false;
 }
 
 // runs updatePositions on scroll
-window.addEventListener('scroll', updatePositions);
+window.addEventListener('scroll', function() {
+    lastScrollY = window.scrollY;
+    requestTick();
+});
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 40; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
-    elem.basicLeft = (i % cols) * s;
+    elem.style.left = (i % cols) * s + 'px';
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
-  updatePositions();
+  requestTick();
 });
