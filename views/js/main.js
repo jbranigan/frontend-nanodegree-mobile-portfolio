@@ -371,9 +371,9 @@ var pizzaElementGenerator = function(i) {
   pizzaImageContainer = document.createElement("div");
   pizzaImage = document.createElement("img");
   pizzaDescriptionContainer = document.createElement("div");
-
+  // Add the default size class to each pizza container
   pizzaContainer.classList.add("randomPizzaContainer", "pizza-medium");
-  // pizzaContainer.style.width = "33.33%";
+  // Remove pizzaContainer.style.width = "33.33%"; since this is taken care of in CSS
   pizzaContainer.style.height = "325px";
   pizzaContainer.id = "pizza" + i;                // gives each pizza element a unique id
   pizzaImageContainer.style.width="35%";
@@ -404,9 +404,11 @@ var resizePizzas = function(size) {
 
   // Changes the value for the size of the pizza above the slider
   function changeSliderLabel(size) {
+    // Identify the element first
     var sizeElem = document.getElementById('pizzaSize');
     switch(size) {
       case "1":
+        // Use innnerText instead of innerHTML because it doesn't trigger a reflow
         sizeElem.innerText = "Small";
         return;
       case "2":
@@ -422,15 +424,19 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-  // Remove unnecessary determineDx function
+  // Removed unnecessary determineDx function
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
+    // Get the elements once
     var containers = document.getElementsByClassName('randomPizzaContainer');
+    // Loop speed optimization, declaring variables and defining the length once
     var i, cLen = containers.length;
     for (i = 0; i < cLen; i++) {
+      // Get the element first
       var container = containers[i];
-      
+      // Use CSS classes to define the size, rather than style.width
+      // This increases the script time a bit, but decreases the overall timing
       switch(size) {
         case "1":
           container.classList.remove('pizza-medium', 'pizza-large');
@@ -490,11 +496,13 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
-// Separate the scroll calculation
+// Separate the scroll position calculation
 // Approach adapted from https://www.html5rocks.com/en/tutorials/speed/animations
+// Globally available variables
 var lastScrollY = 0,
     ticking = false;
 
+// Debounce the rAF call if one is already running
 function requestTick() {
     if (!ticking) {
         requestAnimationFrame(updatePositions);
@@ -507,11 +515,13 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
+  // Use getElementsByClassName instead of querySelectorAll
   var items = document.getElementsByClassName('mover');
 
   for (var i = 0; i < items.length; i++) {
-    // And use that variable in here
+    // Remove document.body.scrollTop and use the global lastScrollY variable
     var phase = Math.sin((lastScrollY / 1250) + (i % 5));
+    // Use a CSS transform instead of style.left to avoid reflows
     items[i].style.transform = 'translateX(' + 100 * phase + 'px)';
   }
 
@@ -524,13 +534,15 @@ function updatePositions() {
     logAverageFrame(timesToUpdatePosition);
   }
 
-  // Reset ticking
+  // Reset ticking to let the next rAF know it can fire
   ticking = false;
 }
 
-// runs updatePositions on scroll
+// Runs updatePositions on scroll
 window.addEventListener('scroll', function() {
+    // Calculate this variable outside updatePositions loop
     lastScrollY = window.scrollY;
+    // Check to see if there's already a running animation
     requestTick();
 });
 
@@ -538,15 +550,18 @@ window.addEventListener('scroll', function() {
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
+  // Reduce the number of pizzas that need to be generated
   for (var i = 0; i < 40; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
+    // Set the initial left position of the pizza here, since using a CSS transform
     elem.style.left = (i % cols) * s + 'px';
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
+  // Check to see if there's already a running animation
   requestTick();
 });
