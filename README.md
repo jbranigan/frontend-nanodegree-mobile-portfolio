@@ -29,11 +29,18 @@ View the GitHub hosted pages at: [https://jbranigan.github.io/frontend-nanodegre
 
 #### Optimizations made
 * Scrolling FPS
-    1. updatePositions()
-        * 
-
-### Customization with Bootstrap
-The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> framework. All custom styles are in `dist/css/portfolio.css` in the portfolio repo.
-
-* <a href="http://getbootstrap.com/css/">Bootstrap's CSS Classes</a>
-* <a href="http://getbootstrap.com/components/">Bootstrap's Components</a>
+    * Decouple the update function from the scroll eventListener
+    * Debounce update requests and use rAF
+    * Use `getElementsByClassName` instead of `querySelectorAll`
+    * Pull calculations out of the for loop
+    * Use CSS `transform` rather than `style.left`
+    * Reduce the number of pizzas being generated
+* Resizing Pizzas
+    * In `changeSliderLabel()`, use `innerText`, rather than `innerHTML` to avoid reflow
+    * In `changePizzaSizes()`:
+        * Remove the `determineDx` function entirely
+        * Get the `randomPizzaContainer` elements only once, using `getElementByClassName`
+        * Declare loop condition variables before the loop
+        * Move the switch statement into the loop, and rely on CSS classes to control the sizes, rather than `style.width`
+        * Promote the pizzas to new layers using CSS `will-change` property to minimize paints
+        * It seems like there is still a lot of layout happening, but I couldn't figure out how to speed that up (suggestions welcome!)
