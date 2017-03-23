@@ -1,6 +1,8 @@
 ## Website Performance Optimization portfolio project
 
-View the GitHub hosted pages at: [https://jbranigan.github.io/frontend-nanodegree-mobile-portfolio/](https://jbranigan.github.io/frontend-nanodegree-mobile-portfolio/)
+### Review Instructions:
+* Option 1: View the GitHub hosted pages at: [https://jbranigan.github.io/frontend-nanodegree-mobile-portfolio/](https://jbranigan.github.io/frontend-nanodegree-mobile-portfolio/)
+* Option 2: Clone or download this repository. Unzip the download, if necessary. Open `/index.html` in your browser.
 
 ### Part 1: Optimize PageSpeed Insights score for index.html
 
